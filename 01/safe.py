@@ -1,12 +1,19 @@
-from typing import Literal
+from typing import Literal, Tuple
 import re
 
 
-def rotate(pos: int, n: int, dir: Literal["L", "R"]) -> int:
-    if dir == "R":
-        return (pos + n) % 100
-    if dir == "L":
-        return (pos - n) % 100
+def rotate(pos: int, n: int, dir: Literal["L", "R"]) -> Tuple[int, int]:
+    newpos = pos
+    zeros = 0
+    for _ in range(n):
+        if dir == "R":
+            newpos = (newpos + 1)%100
+        if dir == "L":
+            newpos = (newpos - 1)%100
+        if newpos == 0:
+            zeros += 1
+    
+    return (newpos, zeros)
 
 
 def main():
@@ -22,9 +29,9 @@ def main():
 
             dir = match['dir']
             n = int(match['n'])
-            pos = rotate(pos, n, dir)
-            if pos == 0:
-                acc = acc+1
+            (pos, zeros) = rotate(pos, n, dir)
+            acc = acc + zeros
+            print(dir, n, "=>", pos, zeros, acc)
 
     print(acc)
 
