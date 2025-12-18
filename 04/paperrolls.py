@@ -17,21 +17,22 @@ def check_surround(floor, y, x) -> bool:
 
 def main():
     floor = []
-    accessible = 0
+    removed = 0
     with open('04/input.txt') as file:
         for line in file:
             floor.append(line.rstrip())
-    for y in range(len(floor)):
-        for x in range(len(floor[0])):
-            if (floor[y][x] == "."):
-                print('.', end="")
-            elif (check_surround(floor, y, x)):
-                accessible += 1
-                print('x', end="")
-            else:
-                print(floor[y][x], end="")
-        print('')
-    print(accessible)
+    while True:
+        curRemoved = 0
+        for y in range(len(floor)):
+            for x in range(len(floor[0])):
+                char = floor[y][x]
+                if (char == "@" and check_surround(floor, y, x)):
+                    removed += 1
+                    curRemoved += 1
+                    floor[y] = floor[y][:x] + "x" + floor[y][x+1:]
+        if curRemoved == 0:
+            break
+    print(removed)
 
 
 if __name__ == "__main__":
